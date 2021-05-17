@@ -9,6 +9,6 @@ class TestController extends Controller
     //
     public function index()
     {
-        return ('tests.test');
+        return view('tests.test');
     }
 }
