@@ -15,6 +15,12 @@ class CreateContactFormsTable extends Migration
     {
         Schema::create('contact_forms', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('your_name', 100);
+            $table->string('email', 255);
+            $table->longText('url', 255)->nullable($value = true);
+            $table->boolean('gender');
+            $table->tinyInteger('age');
+            $table->string('contact', 200);
             $table->timestamps();
         });
     }
