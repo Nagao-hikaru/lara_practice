@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+                    <a href="{{ route('contact.create') }}">新規作成</a>
                     indexですよ!
                 </div>
             </div>
