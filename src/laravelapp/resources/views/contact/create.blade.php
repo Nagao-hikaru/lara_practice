@@ -15,7 +15,8 @@
                     @endif
 
                     createです!
-                    <form method='POST' action="">
+                    <form method='POST' action="{{ route('contact.store') }}">
+                      @csrf
                       氏名
                       <input type="text" name="your_name">
                       <br>

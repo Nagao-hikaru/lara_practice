@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactForm;
 use Illuminate\Http\Request;
 
 class ContactFormController extends Controller
@@ -34,7 +35,12 @@ class ContactFormController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $contact = new ContactForm();
+        $input = $request->except(['caution']);
+        $contact->create($input);
+
+        return redirect('contact/index');
+        // dd($input);
     }
 
     /**
