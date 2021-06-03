@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactFormRequest;
 use App\Models\ContactForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,10 +37,10 @@ class ContactFormController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Requests/ContactFormRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ContactFormRequest $request)
     {
         $contact = new ContactForm();
         $input = $request->except(['caution']);
@@ -58,6 +59,15 @@ class ContactFormController extends Controller
     public function show($id)
     {
         //
+        $contact = ContactForm::find($id);
+
+        $contact->gender;
+        if($contact->gender == 0) {
+            $gender = '男性';
+        } else {
+            $gender = '女性';
+        }
+        return view('contact.show', compact('contact', 'gender'));
     }
 
     /**
@@ -68,7 +78,9 @@ class ContactFormController extends Controller
      */
     public function edit($id)
     {
-        //
+        $contact = ContactForm::find($id);
+
+        return view('contact.edit', compact('contact'));
     }
 
     /**
@@ -80,7 +92,12 @@ class ContactFormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $contact = ContactForm::find($id);
+        $input = $request->except(['caution']);
+        $contact->fill($input)->save();
+
+
+        return redirect('contact/index');
     }
 
     /**
@@ -91,6 +108,9 @@ class ContactFormController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contact = ContactForm::find($id);
+        $contact->delete();
+
+        return redirect('contact/index');
     }
 }
