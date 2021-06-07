@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactFormRequest;
+use App\Jobs\CreateNotice;
 use App\Models\ContactForm;
+use App\Models\Notice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -46,6 +49,8 @@ class ContactFormController extends Controller
         $input = $request->except(['caution']);
         $contact->create($input);
 
+
+        CreateNotice::dispatch(Auth::id());
         return redirect('contact/index');
         // dd($input);
     }
