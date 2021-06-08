@@ -34,7 +34,7 @@ class CreateNotice implements ShouldQueue
     {
         Notice::create([
             'user_id' => $this->user_id,
-            'content' => 'aaa',
+            'content' => config('notice.content'),
         ]);
     }
 }

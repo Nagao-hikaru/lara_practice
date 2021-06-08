@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'ContactFormController@index')->name('contact.index');
 
 Route::get('tests/test', 'TestController@index');
 Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function () {
