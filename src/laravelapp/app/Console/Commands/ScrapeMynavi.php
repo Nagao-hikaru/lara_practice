@@ -80,6 +80,7 @@ class ScrapeMynavi extends Command
                 ];
             });
             MynaviUrl::insert($urls);
+            sleep(30);
 
         }
     }
@@ -104,8 +105,8 @@ class ScrapeMynavi extends Command
             ]);
             if ($index > 5) {
                 break;
-                sleep(30);
             }
+            sleep(30);
         }
     }
 
