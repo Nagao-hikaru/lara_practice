@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\MynaviUrl;
 use Illuminate\Console\Command;
 use Goutte;
+use Carbon\Carbon;
 
 class ScrapeMynavi extends Command
 {
@@ -40,10 +42,16 @@ class ScrapeMynavi extends Command
     {
         $url = 'https://tenshoku.mynavi.jp/list/pg33/';
         $crawler = Goutte::request('GET', $url);
-        $crawler->filter('.cassetteRecruit__copy > a')->each(function ($node) {
-            $href = $node->attr('href');
-            dump(substr($href, 0, strpos($href, '/', 1) + 1));
+        $urls = $crawler->filter('.cassetteRecruit__copy > a')->each(function ($node) {
+            return [
+                'url' => $node->attr('href'),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            // dump(substr($href, 0, strpos($href, '/', 1) + 1));
         });
+        // dd($urls);
+        MynaviUrl::insert($urls);
 
 
     }
