@@ -151,6 +151,13 @@ class ScrapeMynavi extends Command
      */
     private function exportCsv()
     {
-        fopen(storage_path($this::FILE_PATH), 'w');
+        $file = fopen(storage_path($this::FILE_PATH), 'w');
+        if (!$file) {
+            throw new  \Exception('ファイルの読み込みに失敗しました');
+        }
+
+        if (!fputcsv($file, ['id', 'url', 'title', 'company_name', 'features'])) {
+            throw new  \Exception('ヘッダーの書き込みに失敗しました');
+        }
     }
 }
