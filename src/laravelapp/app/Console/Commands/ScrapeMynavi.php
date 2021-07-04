@@ -61,7 +61,7 @@ class ScrapeMynavi extends Command
      */
     private function saveUrls()
     {
-        foreach (range(1, 2) as $num) {
+        foreach (range(1, 1) as $num) {
             $url = sprintf('https://tenshoku.mynavi.jp/list/pg%d/', $num);
             $crawler = Goutte::request('GET', $url);
             $urls = $crawler->filter('.cassetteRecruit__copy > a')->each(function ($node) {
@@ -73,7 +73,7 @@ class ScrapeMynavi extends Command
                 ];
             });
             MynaviUrl::insert($urls);
-            sleep(30);
+            // sleep(30);
         }
     }
 }
