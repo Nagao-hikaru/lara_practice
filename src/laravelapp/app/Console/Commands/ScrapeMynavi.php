@@ -11,14 +11,14 @@ class ScrapeMynavi extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'scrape:mynavi';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Scrape mynavi';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,11 @@ class ScrapeMynavi extends Command
      */
     public function handle()
     {
-        //
+        // echo 10 . PHP_EOL;
+        $crawler = \Goutte::request('GET', 'https://duckduckgo.com/html/?q=Laravel');
+    $crawler->filter('.result__title .result__a')->each(function ($node) {
+      dump($node->text());
+    });
+
     }
 }
