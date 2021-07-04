@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Goutte;
 
 class ScrapeMynavi extends Command
 {
@@ -37,11 +38,13 @@ class ScrapeMynavi extends Command
      */
     public function handle()
     {
-        // echo 10 . PHP_EOL;
-        $crawler = \Goutte::request('GET', 'https://duckduckgo.com/html/?q=Laravel');
-    $crawler->filter('.result__title .result__a')->each(function ($node) {
-      dump($node->text());
-    });
+        $url = 'https://tenshoku.mynavi.jp/list/pg33/';
+        $crawler = Goutte::request('GET', $url);
+        $crawler->filter('.cassetteRecruit__copy > a')->each(function ($node) {
+            $href = $node->attr('href');
+            dump(substr($href, 0, strpos($href, '/', 1) + 1));
+        });
+
 
     }
 }
