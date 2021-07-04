@@ -44,9 +44,9 @@ class ScrapeMynavi extends Command
      */
     public function handle()
     {
-        // $this->truncateTables();
-        // $this->saveUrls();
-        // $this->saveJobs();
+        $this->truncateTables();
+        $this->saveUrls();
+        $this->saveJobs();
         $this->exportCsv();
     }
 
@@ -80,7 +80,7 @@ class ScrapeMynavi extends Command
                 ];
             });
             MynaviUrl::insert($urls);
-            // sleep(30);
+
         }
     }
 
@@ -92,7 +92,7 @@ class ScrapeMynavi extends Command
     private function saveJobs()
     {
         $mynavi_urls = MynaviUrl::all();
-        foreach (MynaviUrl::all() as $mynavi_url) {
+        foreach (MynaviUrl::all() as $index => $mynavi_url) {
             $url = $this::HOST . $mynavi_url->url;
             $crawler = Goutte::request('GET', $url);
 
@@ -102,8 +102,10 @@ class ScrapeMynavi extends Command
                 'company_name' => $this->getCompanyName($crawler),
                 'features' => $this->getFeatures($crawler),
             ]);
-            break;
-            sleep(30);
+            if ($index > 5) {
+                break;
+                sleep(30);
+            }
         }
     }
 
@@ -153,11 +155,18 @@ class ScrapeMynavi extends Command
     {
         $file = fopen(storage_path($this::FILE_PATH), 'w');
         if (!$file) {
-            throw new  \Exception('ファイルの読み込みに失敗しました');
+            throw new \Exception('ファイルの読み込みに失敗しました');
         }
 
         if (!fputcsv($file, ['id', 'url', 'title', 'company_name', 'features'])) {
-            throw new  \Exception('ヘッダーの書き込みに失敗しました');
+            throw new \Exception('ヘッダーの書き込みに失敗しました');
         }
+
+        foreach (MynaviJob::all() as $mynavi_job) {
+            if (!fputcsv($file, [$mynavi_job->id, $mynavi_job->url, $mynavi_job->title, $mynavi_job->company_name, $mynavi_job->features])) {
+                throw new \Exception('ボディの書き込みに失敗しました');
+            }
+        };
+        fclose($file);
     }
 }
