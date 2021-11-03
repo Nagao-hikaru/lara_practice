@@ -58,7 +58,7 @@ class ScrapeMynavi extends Command
     private function truncateTables()
     {
         MynaviUrl::truncate();
-        MynaviJob    ::truncate();
+        MynaviJob::truncate();
     }
 
     /**
